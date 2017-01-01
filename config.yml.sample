@@ -1,0 +1,12 @@
+line:
+  accessToken: 'YOUR CHANNEL ACCESS TOKEN'
+# https://developers.line.me/messaging-api/getting-started
+
+gmail:
+  username: 'YOUR GMAIL USERNAME'
+  password: 'YOUR GMAIL PASSWORD'
+# https://nodemailer.com/using-gmail/
+
+otayoriPhoto:
+  email: 'YOUR OTAYORI PHOTO RECEIVER EMAIL'
+# https://www.nttdocomo.co.jp/service/otayori_photo/
