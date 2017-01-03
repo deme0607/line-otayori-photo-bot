@@ -5,6 +5,7 @@ const API_BASE_URL = 'https://api.line.me/v2/bot/message/';
 
 const superagent = require('superagent');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const yaml = require('js-yaml');
 const fs = require('fs');
 
@@ -23,7 +24,16 @@ const sendMessage = (replyToken, message) => {
     });
 };
 
+const validateSignature = (body, signature) => {
+  return crypto.createHmac('sha256', config.line.secret).update(body, 'utf8').digest('base64') === signature;
+};
+
 module.exports.lineWebhook = (event, context, callback) => {
+  if (!validateSignature(event.body, event.headers['X-Line-Signature'])) {
+    console.error('Signature Validation Failed.', event);
+    return callback(null, {statusCode: 200, body: JSON.stringify({})});
+  }
+
   const body = JSON.parse(event.body);
 
   body.events.forEach(data => {

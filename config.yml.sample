@@ -1,5 +1,6 @@
 line:
   accessToken: 'YOUR CHANNEL ACCESS TOKEN'
+  secret: 'YOUR CHANNEL SECRET'
 # https://developers.line.me/messaging-api/getting-started
 
 gmail:
