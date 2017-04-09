@@ -12,7 +12,7 @@ const fs = require('fs');
 const config = yaml.load(fs.readFileSync('./config.yml', 'utf8'));
 
 const sendMessage = (replyToken, message) => {
-  superagent.post(API_BASE_URL + '/reply')
+  superagent.post(API_BASE_URL + 'reply')
     .set('Content-type', 'application/json; charset=UTF-8')
     .set('Authorization',  'Bearer ' + config.line.accessToken)
     .send({
