@@ -38,7 +38,8 @@ $ aws configure
                 "s3:*",
                 "iam:*",
                 "apigateway:*",
-                "lambda:*"
+                "lambda:*",
+                "logs:*"
             ],
             "Resource": "*"
         }
@@ -46,10 +47,10 @@ $ aws configure
 }
 ```
 
-### メール送信用 Gmail アカウントの作成
+### メール送信用 SMTP サーバの準備
 
-お便りフォト側に写真を添付して送信するメールアドレスを準備します。
-Bot からメール送信時にセキュリティのエラーが発生する場合は[こちら](http://www.atmarkit.co.jp/ait/articles/1409/03/news109.html)を参考。
+お便りフォト側に写真を添付して送信するメールアドレス及び SMTP サーバを準備します。
+[Amazon SES](http://dev.classmethod.jp/cloud/aws/amazon-ses-build-and-practice/) 等が手軽に利用できます。
 
 ### お便りフォトの設定
 
@@ -82,9 +83,9 @@ line:
   accessToken: 'LINE Bot の Channel Access Token'
   secret: 'LINE Bot の Channel Secret'
 
-gmail:
-  username: 'メール送信元の Gmail ユーザ名'
-  password: 'Gmail パスワード'
+mail:
+  sender: 'お便りフォトに登録したメール送信元アドレス
+  smtp: 'nodemailer に渡す各種設定。https://nodemailer.com/smtp/'
 
 otayoriPhoto:
   email: 'お便りフォトのメールアドレス'

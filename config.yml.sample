@@ -3,10 +3,16 @@ line:
   secret: 'YOUR CHANNEL SECRET'
 # https://developers.line.me/messaging-api/getting-started
 
-gmail:
-  username: 'YOUR GMAIL USERNAME'
-  password: 'YOUR GMAIL PASSWORD'
-# https://nodemailer.com/using-gmail/
+mail:
+  sender: 'YOUR SENDER EMAIL ADDRESS'
+  smtp:
+    host: 'SMTP SERVER'
+    port: 'SMTP PORT'
+    secure: true
+    auth:
+      user: 'SMTP USER'
+      pass: 'SMTP PASSWORD'
+# https://nodemailer.com/smtp/
 
 otayoriPhoto:
   email: 'YOUR OTAYORI PHOTO RECEIVER EMAIL'

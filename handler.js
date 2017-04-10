@@ -35,6 +35,12 @@ module.exports.lineWebhook = (event, context, callback) => {
   }
 
   const body = JSON.parse(event.body);
+  const transporter = nodemailer.createTransport(config.mail.smtp);
+  const mailOptions = {
+    from: '"LINE Otayori Photo" <' + config.mail.sender + '>',
+    to: config.otayoriPhoto.email,
+    subject: '写真',
+  };
 
   body.events.forEach(data => {
     if (data.message.type !== MESSAGE_TYPE_IMAGE) return;
@@ -45,18 +51,17 @@ module.exports.lineWebhook = (event, context, callback) => {
     superagent.get(API_BASE_URL + messageId + '/content')
       .set('Authorization',  'Bearer ' + config.line.accessToken)
       .then(response => {
-        const transporter = nodemailer.createTransport(
-          'smtps://' + config.gmail.username + '%40gmail.com:' + config.gmail.password + '@smtp.gmail.com'
-        );
 
+        /*
         const mailOptions = {
-          from: '"LINE Otayori Photo" <' + config.gmail.username + '@gmail.com>',
+          from: '"LINE Otayori Photo" <' + config.mail.sender + '>',
           to: config.otayoriPhoto.email,
           subject: '写真',
           attachments: [{filename: 'image.jpg', content: response.body}],
         };
+        */
 
-        transporter.sendMail(mailOptions)
+        transporter.sendMail(Object.assign({}, mailOptions, {attachments: [{filename: 'image.jpg', content: response.body}]}))
           .then(() => {
             sendMessage(replyToken, '画像を送信しました');
           })
