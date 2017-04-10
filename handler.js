@@ -17,10 +17,10 @@ const sendMessage = (replyToken, message) => {
     .set('Authorization',  'Bearer ' + config.line.accessToken)
     .send({
       replyToken: replyToken,
-      messages: [{type: 'text', text: message}],
+      messages: [{type: 'text', text: message.toString()}],
     })
     .catch(error => {
-      console.log(error);
+      console.error(error);
     });
 };
 
