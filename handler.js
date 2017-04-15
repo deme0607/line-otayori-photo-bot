@@ -35,6 +35,14 @@ module.exports.lineWebhook = (event, context, callback) => {
   }
 
   const body = JSON.parse(event.body);
+  const imageEvents = body.events.filter((data) => data.message.type === MESSAGE_TYPE_IMAGE);
+
+  if (imageEvents.length < 1) {
+    return callback(null, {statusCode: 200, body: JSON.stringify({})});
+  }
+
+  const hasMultiple = (imageEvents.length > 1);
+
   const transporter = nodemailer.createTransport(config.mail.smtp);
   const mailOptions = {
     from: '"LINE Otayori Photo" <' + config.mail.sender + '>',
@@ -42,36 +50,28 @@ module.exports.lineWebhook = (event, context, callback) => {
     subject: '写真',
   };
 
-  body.events.forEach(data => {
-    if (data.message.type !== MESSAGE_TYPE_IMAGE) return;
-
+  imageEvents.forEach((data, i) => {
     const messageId = data.message.id;
     const replyToken = data.replyToken;
+    const replyMessage = hasMultiple ? `${i + 1}枚目の画像を送信しました` : '画像を送信しました';
 
-    superagent.get(API_BASE_URL + messageId + '/content')
-      .set('Authorization',  'Bearer ' + config.line.accessToken)
-      .then(response => {
-
-        /*
-        const mailOptions = {
-          from: '"LINE Otayori Photo" <' + config.mail.sender + '>',
-          to: config.otayoriPhoto.email,
-          subject: '写真',
-          attachments: [{filename: 'image.jpg', content: response.body}],
-        };
-        */
-
-        transporter.sendMail(Object.assign({}, mailOptions, {attachments: [{filename: 'image.jpg', content: response.body}]}))
+    setTimeout(() => {
+      superagent.get(API_BASE_URL + messageId + '/content')
+        .set('Authorization', 'Bearer ' + config.line.accessToken)
+        .then(response => {
+          transporter.sendMail(Object.assign({}, mailOptions, {
+            attachments: [{filename: 'image.jpg', content: response.body}],
+          }))
           .then(() => {
-            sendMessage(replyToken, '画像を送信しました');
+            sendMessage(replyToken, replyMessage);
           })
           .catch((error) => {
             sendMessage(replyToken, error);
           });
-      })
-      .catch((error) => {
-        sendMessage(replyToken, error);
-      });
+        }).catch((error) => {
+          sendMessage(replyToken, error);
+        });
+    }, 1000);
   });
 
   callback(null, {statusCode: 200, body: JSON.stringify({})});
