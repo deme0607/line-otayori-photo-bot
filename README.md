@@ -2,8 +2,8 @@
 
 ## 概要
 
-受診した画像をお便りフォトに転送するための Bot です。
-[Serverless](https://serverless.com/)フレームワークを使って AWS Lambda 上に展開・動作する Bot なので、Serverless で運用可能です。
+受診した画像をお便りフォトに転送するための bot です。
+[Serverless](https://serverless.com/)フレームワークを使って AWS Lambda 上に展開・動作する bot なので、Serverless で運用可能です。
 
 ## 事前準備
 
@@ -13,7 +13,7 @@ https://business.line.me/ja/services/bot から LINE Messaging API を利用で�
 
 ### Bot の設定
 
-LINE@ Manager から Bot を設定する。
+LINE@ Manager から bot を設定する。
 
 * Webhook 送信: 利用する
 * Bot のグループトーク参加: 利用する
@@ -50,7 +50,7 @@ $ aws configure
 ### メール送信用 SMTP サーバの準備
 
 お便りフォト側に写真を添付して送信するメールアドレス及び SMTP サーバを準備します。
-[Amazon SES](http://dev.classmethod.jp/cloud/aws/amazon-ses-build-and-practice/) 等が手軽に利用できます。
+自前ドメインだと docomo のスパムフィルタにかかってしまうようで、作者は専用の Gmail アカウントを1つ作成し利用しています。
 
 ### お便りフォトの設定
 
